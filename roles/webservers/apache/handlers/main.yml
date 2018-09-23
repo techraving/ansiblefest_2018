@@ -1,0 +1,16 @@
+---
+
+- name: log_apache2_missing_message
+  syslogger:
+    msg: "apache2 is not installed on Inventory - {{ inventory_hostname }}"
+    priority: "err"
+
+- name: log_apache2_config_message
+  syslogger:
+    msg: "The apache2.conf is not the same on Inventory - {{ inventory_hostname }}"
+    priority: "err"
+
+- name: remidiate
+  package:
+    name: apache2
+    state: latest

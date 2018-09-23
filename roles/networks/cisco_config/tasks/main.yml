@@ -1,0 +1,34 @@
+- name: Copy the files for comparison
+  copy:
+    src: "{{ inventory_hostname }}-hosts"
+    dest: "~/{{ inventory_hostname }}-hosts"
+
+- name: SHA1 of the test hosts file
+  stat:
+    path : "~/{{ inventory_hostname }}-hosts"
+  register: hosts_stat_test
+
+- name: Set SHA1 of the test hosts file
+  set_fact:
+    hosts_conf_stat_test: "{{ hosts_stat_test.stat.checksum }}"
+
+#- name: Remove the test file
+#  file:
+#    path: "~/{{ inventory_hostname }}-hosts"
+#    state: absent
+
+- name: SHA1 of the hosts file
+  stat:
+    path : "/etc/hosts"
+  register: hosts_conf_stat
+
+- name: Set SHA1 of the hosts file
+  set_fact:
+    hosts_conf_stat: "{{ hosts_conf_stat.stat.checksum }}"
+
+- name: Determine if files have changed
+  debug:
+    msg: "The hosts is not the same on Inventory - {{ inventory_hostname }}"
+  notify:
+    - log_hosts_config_message
+  when:  hosts_conf_stat != hosts_conf_stat_test

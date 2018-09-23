@@ -1,0 +1,4 @@
+- name: log_hosts_config_message
+  syslogger:
+    msg: "The hosts is not the same on Inventory - {{ inventory_hostname }}"
+    priority: "err"

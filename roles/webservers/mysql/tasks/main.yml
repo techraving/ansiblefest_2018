@@ -1,0 +1,13 @@
+- name: Check if mysql-server is installed on Debian
+  shell: dpkg -s mysql-server | grep 'install ok installed'
+  register: is_debian_installed
+  failed_when: no
+  changed_when: no
+  when: ansible_os_family == 'Debian'
+
+- name: Notify missing apache2
+  debug:
+    msg: "mysql-server is not installed on Inventory - {{ inventory_hostname }}"
+  notify:
+    - log_mysql_missing_message
+  when: is_debian_installed.stdout == ""

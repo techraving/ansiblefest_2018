@@ -1,0 +1,20 @@
+---
+- name: Web Servers Drift Analysis
+  hosts: webservers
+  become: true
+
+  roles:
+    - role: webservers/apache
+
+- name: Databases Drift Analysis
+  hosts: databases
+  become: true
+
+  roles:
+    - role: webservers/mysql
+
+- name: Networks Drift Analysis
+  hosts: networks
+
+  roles:
+    - role: networks/cisco_config

@@ -1,0 +1,7 @@
+10.0.88.67
+10.0.120.95        Leaf-01
+10.0.120.93        Leaf-02
+10.0.120.94        Spine-01
+10.0.0.1        apic1 apic1
+127.0.0.1        localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1        localhost6 localhost6.localdomain6

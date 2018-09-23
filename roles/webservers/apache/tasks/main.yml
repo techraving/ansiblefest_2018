@@ -1,0 +1,52 @@
+- name: Check if apache2 is installed on Debian
+  shell: dpkg -s apache2 | grep 'install ok installed'
+  register: is_debian_installed
+  failed_when: no
+  changed_when: no
+  when: ansible_os_family == 'Debian'
+
+- name: Notify missing apache2
+  debug:
+    msg: "apache2 is not installed on Inventory - {{ inventory_hostname }}"
+  notify:
+    - log_apache2_missing_message
+    - remidiate
+  when: is_debian_installed.stdout == ""
+
+- block:
+  - name: Copy the files for comparison
+    copy:
+      src: apache2.conf
+      dest: /etc/apache2/apache2.conf_test
+
+  - name: SHA1 of the test apache2.conf file
+    stat:
+      path : "/etc/apache2/apache2.conf_test"
+    register: apache2_conf_stat_test
+
+  - name: Set SHA1 of the test apache2.conf file
+    set_fact:
+      apache2_conf_stat_test: "{{ apache2_conf_stat_test.stat.checksum }}"
+
+  - name: Remove the test file
+    file:
+      path: /etc/apache2/apache2.conf_test
+      state: absent
+
+  - name: SHA1 of the apache2.conf file
+    stat:
+      path : "/etc/apache2/apache2.conf"
+    register: apache2_conf_stat
+
+  - name: Set SHA1 of the apache2.conf file
+    set_fact:
+      apache2_conf_stat: "{{ apache2_conf_stat.stat.checksum }}"
+
+  - name: Determine if files have changed
+    debug:
+      msg: "The apache2.conf is not the same on Inventory - {{ inventory_hostname }}"
+    notify:
+      - log_apache2_config_message
+    when:  apache2_conf_stat != apache2_conf_stat_test
+
+  when: is_debian_installed.stdout != ""

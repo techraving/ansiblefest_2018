@@ -1,0 +1,15 @@
+---
+
+- name: log_mysql_missing_message
+  syslogger:
+    msg: "mysql-server is not installed on Inventory - {{ inventory_hostname }}"
+    priority: "err"
+
+- name: log_mysql_config_message
+  syslogger:
+    msg: "The mysql.conf is not the same on Inventory - {{ inventory_hostname }}"
+    priority: "err"
+
+- name: register event in cloudforms
+  debug:
+    msg: "API code goes here"
