@@ -1,6 +1,6 @@
 ---
 - name: Web Servers Drift Analysis
-  hosts: webservers
+  hosts: all
   become: true
 
   roles:
