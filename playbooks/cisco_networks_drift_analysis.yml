@@ -1,0 +1,6 @@
+---
+- name: Cisco Networks Drift Analysis
+  hosts: all
+
+  roles:
+    - role: networks/cisco_config

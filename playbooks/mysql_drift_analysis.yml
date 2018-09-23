@@ -1,0 +1,7 @@
+---
+- name: MySQL Databases Drift Analysis
+  hosts: all
+  become: true
+
+  roles:
+    - role: databases/mysql

@@ -5,7 +5,7 @@
   changed_when: no
   when: ansible_os_family == 'Debian'
 
-- name: Notify missing apache2
+- name: Notify missing mysql
   debug:
     msg: "mysql-server is not installed on Inventory - {{ inventory_hostname }}"
   notify:

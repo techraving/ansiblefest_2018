@@ -12,10 +12,10 @@
   set_fact:
     hosts_conf_stat_test: "{{ hosts_stat_test.stat.checksum }}"
 
-#- name: Remove the test file
-#  file:
-#    path: "~/{{ inventory_hostname }}-hosts"
-#    state: absent
+- name: Remove the test file
+  file:
+    path: "~/{{ inventory_hostname }}-hosts"
+    state: absent
 
 - name: SHA1 of the hosts file
   stat:
